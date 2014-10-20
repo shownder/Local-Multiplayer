@@ -1,0 +1,100 @@
+settings =
+{
+	orientation =
+	{
+		default = "portrait",
+        supported = { "portrait" },
+	},
+	
+	iphone =
+    {
+		plist =
+      {
+        UIAppFonts = 
+          {
+            "Rock Salt.ttf",
+            "WCManoNegraBta.ttf",
+            "Digital-7Mono.ttf",
+            "BerlinSansFB-Reg.ttf"
+          },
+        UIStatusBarHidden = true,
+        CFBundleIconFiles = 
+          {
+            "Icon.png",
+            "Icon@2x.png",
+            "Icon-Small-40.png",
+            "Icon-Small-40@2x.png",
+            "Icon-60.png",
+            "Icon-60@2x.png",
+            "Icon-72.png",
+            "Icon-72@2x.png",
+            "Icon-76.png",
+            "Icon-76@2x.png",
+            "Icon-Small-50.png",
+            "Icon-Small-50@2x.png",
+            "Icon-Small.png",
+            "Icon-Small@2x.png"
+          },
+        UILaunchImages = {
+                {  --iPhone 4
+                    ["UILaunchImageMinimumOSVersion"] = "7.0",
+                    ["UILaunchImageName"] = "Default",
+                    ["UILaunchImageOrientation"] = "Portrait",
+                    ["UILaunchImageSize"] = "{320, 480}"
+                },
+                {  --iPhone 5
+                    ["UILaunchImageMinimumOSVersion"] = "7.0",
+                    ["UILaunchImageName"] = "Default-568h",
+                    ["UILaunchImageOrientation"] = "Portrait",
+                    ["UILaunchImageSize"] = "{320, 568}"
+                },
+                {  --iPad portrait
+                    ["UILaunchImageMinimumOSVersion"] = "7.0",
+                    ["UILaunchImageName"] = "Default-Portrait",
+                    ["UILaunchImageOrientation"] = "Portrait",
+                    ["UILaunchImageSize"] = "{768, 1024}"
+                },
+                {  --iPad landscape
+                    ["UILaunchImageMinimumOSVersion"] = "7.0",
+                    ["UILaunchImageName"] = "Default-Landscape",
+                    ["UILaunchImageOrientation"] = "Landscape",
+                    ["UILaunchImageSize"] = "{768, 1024}"
+                },
+                {  --iPhone 6
+                    ["UILaunchImageMinimumOSVersion"] = "8.0",
+                    ["UILaunchImageName"] = "Default-667h",
+                    ["UILaunchImageOrientation"] = "Portrait",
+                    ["UILaunchImageSize"] = "{375, 667}"
+                },
+                {  --iPhone 6 Plus portrait
+                    ["UILaunchImageMinimumOSVersion"] = "8.0",
+                    ["UILaunchImageName"] = "Default-736h",
+                    ["UILaunchImageOrientation"] = "Portrait",
+                    ["UILaunchImageSize"] = "{414, 736}"
+                },
+                { -- iPhone 6 Plus landscape left
+                    ["UILaunchImageMinimumOSVersion"] = "8.0",
+                    ["UILaunchImageName"] = "Default-Landscape-736h",
+                    ["UILaunchImageOrientation"] = "LandscapeLeft",
+                    ["UILaunchImageSize"] = "{414, 736}"
+                },
+                { -- iPhone 6 Plus landscape right
+                    ["UILaunchImageMinimumOSVersion"] = "8.0",
+                    ["UILaunchImageName"] = "Default-Landscape-736h",
+                    ["UILaunchImageOrientation"] = "LandscapeRight",
+                    ["UILaunchImageSize"] = "{414, 736}"
+                }
+            },
+      }
+    },
+  android =
+  {
+   usesPermissions =
+   {
+      "android.permission.INTERNET",
+      "com.android.vending.BILLING",
+      "com.android.vending.CHECK_LICENSE",
+   },
+  }
+    
+}
