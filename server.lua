@@ -14,8 +14,8 @@ S.getIP = function()
 end
 
 S.createServer = function()
-
-    local tcp, err = socket.bind( S.getIP(), 11111 )  --create a server object
+    print("Creating Server")
+    local tcp, err = socket.bind( S.getIP(), 22222 )  --create a server object
     tcp:settimeout( 0 )
 
     local function sPulse()
@@ -23,7 +23,7 @@ S.createServer = function()
             local client = tcp:accept()  --allow a new client to connect
             if client then
                 print( "found client" )
-                clent.name = "Client #" .. #clientList+1
+                --client.name = "Client #" .. #clientList+1
                 client:settimeout( 0 )  --just check the socket and keep going
                 --TO DO: implement a way to check to see if the client has connected previously
                 --consider assigning the client a session ID and use it on reconnect.
@@ -65,11 +65,11 @@ S.createServer = function()
     local serverPulse = timer.performWithDelay( 100, sPulse, 0 )
 
     local function stopServer()
+        print("Stopping Server")
         timer.cancel( serverPulse )  --cancel timer
         tcp:close()
         for i, v in pairs( clientList ) do
             v:close()
-            print(i.name .. " Closed")
         end
     end
     return stopServer
