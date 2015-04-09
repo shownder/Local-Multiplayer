@@ -1,3 +1,5 @@
+local sData = require("sData")
+local cData = require("cData")
 local S = {}
 
 local socket = require( "socket" )
@@ -22,13 +24,15 @@ S.createServer = function()
         repeat
             local client = tcp:accept()  --allow a new client to connect
             if client then
-                print( "found client" )
                 --client.name = "Client #" .. #clientList+1
                 client:settimeout( 0 )  --just check the socket and keep going
                 --TO DO: implement a way to check to see if the client has connected previously
                 --consider assigning the client a session ID and use it on reconnect.
                 clientList[#clientList+1] = client
-                clientBuffer[client] = { "hello_client" }  --just including something to send below
+                print("Number of Clients is: " .. #clientList)
+                --if sData.buffer then
+                clientBuffer[client] = { "Server sending test\n" }  --just including something to send below
+                --end
             end
         until not client
         
@@ -47,14 +51,16 @@ S.createServer = function()
 
                 if ( #allData > 0 ) then  --figure out what the client said to the server
                     for i, thisData in ipairs( allData ) do
-                        print( "thisData: ", thisData )
+                        print( "serverData: " .. thisData )
                         --do stuff with data
+                        --sData.incoming = thisData
                     end
                 end
             end
 
             for sock, buffer in pairs( clientBuffer ) do
                 for _, msg in pairs( buffer ) do  --might be empty
+                    --print("The Server is Sending: " .. msg)
                     local data, err = sock:send( msg )  --send the message to the client
                 end
             end

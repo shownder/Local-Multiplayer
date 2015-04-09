@@ -1,6 +1,8 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require ( "widget" )
+local sData = require("sData")
+local cData = require("cData")
 
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE

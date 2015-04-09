@@ -2,6 +2,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local widget = require ( "widget" )
 local sData = require ("sData")
+local cData = require ("cData")
 
 ---------------------------------------------------------------------------------
 -- All code outside of the listener functions will only be executed ONCE
@@ -14,9 +15,20 @@ local messageData, message
 
 ---------------------------------------------------------------------------------
 
+local function connectToServer( ip, port )
+    local sock, err = socket.connect( ip, port )
+    if sock == nil then
+        return false
+    end
+    sock:settimeout( 0 )
+    sock:setoption( "tcp-nodelay", true )  --disable Nagle's algorithm
+    sock:send( "we are connected\n" )
+    return sock
+end
+
 local function createClientLoop( sock, ip, port )
 
-    local buffer = {}
+    local buffer = {"Client Sending Test\n"}
     local clientPulse
 
     local function cPulse()
@@ -25,8 +37,10 @@ local function createClientLoop( sock, ip, port )
 
         repeat
             data, err = sock:receive()
+            --print("The message received is " .. data)
             if data then
-                allData[#allData+1] = data
+              print("There was Data")
+              allData[#allData+1] = data
             end
             if ( err == "closed" and clientPulse ) then  --try again if connection closed
                 connectToServer( ip, port )
@@ -39,9 +53,10 @@ local function createClientLoop( sock, ip, port )
 
         if ( #allData > 0 ) then
             for i, thisData in ipairs( allData ) do
-                print( "thisData: ", thisData )
-                --react to incoming data
-                message.text = thisData 
+              --react to incoming data
+                print( "clientData: " .. thisData )
+                --cData.incoming = thisData
+                --message.text = thisData 
             end
         end
 
@@ -61,6 +76,7 @@ local function createClientLoop( sock, ip, port )
         timer.cancel( clientPulse )  --cancel timer
         clientPulse = nil
         sock:close()
+        print("Client Closed")
     end
     return stopClient
 end
@@ -74,24 +90,20 @@ local function goConnect2()
    end
 end
 
-local function connectToServer( ip, port )
-    local sock, err = socket.connect( ip, port )
-    if sock == nil then
-        return false
-    end
-    sock:settimeout( 0 )
-    sock:setoption( "tcp-nodelay", true )  --disable Nagle's algorithm
-    --sock:send( "we are connected\n" )
-    sock:send( messageData )
-    return sock2
-end
-
 local function goConnect(event)
    local phase = event.phase
 
    if phase == "ended" then
       timer.performWithDelay( 2000, goConnect2, 1 )
       sock = connectToServer(ip, port)
+   end
+end
+
+local function stopConnect(event)
+   local phase = event.phase
+
+   if phase == "ended" then
+      stopClient()
    end
 end
 
@@ -118,8 +130,22 @@ function scene:create( event )
    connectButt.anchorX = 0.5
    connectButt.anchorX = 0.5
    connectButt.x = display.contentCenterX
-   connectButt.y = display.contentHeight - 115
+   connectButt.y = display.contentHeight - 170
    sceneGroup:insert(connectButt)
+
+   local stopButt = widget.newButton
+   {
+    left = display.contentCenterX,
+    top = display.contentCenterY,
+    id = "stopButt",
+    label = "STOP",
+    onEvent = stopConnect
+   }
+   stopButt.anchorX = 0.5
+   stopButt.anchorX = 0.5
+   stopButt.x = display.contentCenterX
+   stopButt.y = display.contentHeight - 115
+   sceneGroup:insert(stopButt)
 
    messageData = message.text .. "\n"
 

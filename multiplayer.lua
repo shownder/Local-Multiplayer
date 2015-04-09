@@ -5,6 +5,8 @@ local device = require("device")
 local socket = require( "socket" )
 local widget = require ( "widget" )
 local server = require ("server")
+local sData = require("sData")
+local cData = require("cData")
 widget.setTheme("widget_theme_ios")
 display.setStatusBar(display.HiddenStatusBar)
 
@@ -14,13 +16,21 @@ display.setStatusBar(display.HiddenStatusBar)
 ---------------------------------------------------------------------------------
 
 local inviteButt, connectButt, deviceName, serverList, newServers, servers, serverCounter
-local adButt, stopButt
+local adButt, stopButt, refreshButt
 local stopServer
 local testText
 
 ---------------------------------------------------------------------------------
 
 --Advertise the Server
+
+local function updateData(event)
+  local phase = event.phase
+
+  if phase == "ended" then
+    sData.buffer = testText.text
+  end
+end
 
 local function advertiseServer( event )
     local phase = event.phase
@@ -91,7 +101,7 @@ local phase = event.phase
 
         stopButt.alpha = 1
         inviteButt.alpha = 0
-
+        refreshButt.alpha = 1
     end
 end
 
@@ -138,6 +148,21 @@ inviteButt.anchorX = 0.5
 inviteButt.x = display.contentCenterX
 inviteButt.y = display.contentHeight - 175
 sceneGroup:insert(inviteButt)
+
+refreshButt = widget.newButton
+{
+    left = display.contentCenterX,
+    top = display.contentCenterY,
+    id = "refreshButt",
+    label = "Send",
+    onEvent = updateData
+}
+refreshButt.anchorX = 0.5
+refreshButt.anchorX = 0.5
+refreshButt.x = display.contentCenterX
+refreshButt.y = display.contentHeight - 55
+sceneGroup:insert(refreshButt)
+refreshButt.alpha = 0
 
 adButt = widget.newButton
 {
